@@ -14,7 +14,18 @@ app.get('/oi', function (req, res) {
 
 
 //CRUD  de lista de DevMon
-const items = ["Java", "Android", "Kotlin", "Express", "NestJS"]
+//const items = ["Java", "Android", "Kotlin", "Express", "NestJS"]
+
+const items = [
+  {
+    "id": 1,
+    "name": "Java"
+  },
+  {
+    "id": 2,
+    "name": "Kotlin"
+  }
+]
 
 
 // READ ALL - [GET] /items
@@ -27,10 +38,12 @@ app.get("/items", function (req, res){
 app.get("/items/:id", function (req, res) {
    //Acessamos o parâmetro de rota ID
    //Subtraí 1 para corrigir a ordem de início da lista
-   const id = req.params.id -1
+   const id = +req.params.id
    
    //Acessmos o item da lista a partir do index.js
-   const item = items[id]
+   const item = items.find(function (elemento){
+    return elemento.id === id
+   })
   
    //Exibe o item obtido
   res.send(item)
@@ -40,13 +53,15 @@ app.get("/items/:id", function (req, res) {
 // CREATE - [POST] /items
 app.post("/items", function (req, res){
   //Extrair informação do requerie of body
-  const item = req.body.name
+  const item = req.body
+
+  item.id = items.length + 1
 
   //Insero ela na lista
   items.push(item)
 
   //Sended message of successfully
-  res.send("Items created with successfully.")
+  res.send(item)
 })
 
 
@@ -54,16 +69,24 @@ app.post("/items", function (req, res){
 app.put("/items/:id", function (req, res){
   //Acessamos o parâmetro de rota ID
    //Subtraí 1 para corrigir a ordem de início da lista
-  const id = req.params.id -1
+  const id = +req.params.id
   
   //obrtemos o novo item a partir of body of required 
-  const newItem = req.body.name 
+  const newItem = req.body
    
   //Colocamos o novo item na mesma posição do item anterior.
-  items[id] = newItem
+  const index = items.findIndex(function (elemento){
+    return elemento.id === id 
+  })
+
+  items[index] = {
+    ...newItem,
+    id,
+
+  }
    
   //Envia mensagem de sucesso!
-  res.send(" Item Update by id successfully.")
+  res.send(items[index])
 })
 
 
@@ -71,10 +94,14 @@ app.put("/items/:id", function (req, res){
 app.delete("/items/:id", function (req, res){
   //Acessamos o parâmetro de rota ID
    //Subtraí 1 para corrigir a ordem de início da lista
-  const id = req.params.id -1
+  const id = req.params.id
+
+  const index = items.findIndex(function (elemento){
+    return elemento.id === id
+  })
   
   //Exclui a informação através do 'id'
-  delete items[id]
+  delete items[index]
 
   //Enviamos mensagem de sucesso
   res.send("Item Deleted by id with successfully.")
