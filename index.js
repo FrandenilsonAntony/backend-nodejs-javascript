@@ -14,13 +14,14 @@ app.get('/oi', function (req, res) {
 
 
 //CRUD  de lista de DevMon
-
 const items = ["Java", "Android", "Kotlin", "Express", "NestJS"]
+
 
 //READ ALL - [GET] /items
 app.get("/items", function (req, res){
    res.send(items)
 })
+
 
 //READ BY ID - [GET] /items/:id/
 app.get("/items/:id", function (req, res) {
@@ -36,7 +37,6 @@ app.get("/items/:id", function (req, res) {
 })
 
 
-
 // CREATE - [POST] /items
 app.post("/items", function (req, res){
   //Extrair informação do requerie of body
@@ -47,6 +47,23 @@ app.post("/items", function (req, res){
 
   //Sended message of successfully
   res.send("Items created with successfully.")
+})
+
+
+// UPDATE - [PUT] /items/:id
+app.put("/items/:id", function (req, res){
+  //Acessamos o parâmetro de rota ID
+   //Subtraí 1 para corrigir a ordem de início da lista
+  const id = req.params.id -1
+  
+  //obrtemos o novo item a partir of body of required 
+  const newItem = req.body.name 
+   
+  //Colocamos o novo item na mesma posição do item anterior.
+  items[id] = newItem
+   
+  //Envia mensagem de sucesso!
+  res.send(" Item Update by id successfully.")
 })
 
 app.listen(3000, function(){
