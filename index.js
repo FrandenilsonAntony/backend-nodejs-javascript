@@ -55,13 +55,19 @@ app.post("/items", function (req, res){
   //Extrair informação do requerie of body
   const item = req.body
 
+  if (!item || !item.name || !item.imageUrl) {
+    return res.status(400).send({
+      message: "name & imageUrl are required"
+    })
+  }
+
   item.id = items.length + 1
 
   //Insero ela na lista
   items.push(item)
 
   //Sended message of successfully
-  res.send(item)
+  res.status(201).send(item)
 })
 
 
