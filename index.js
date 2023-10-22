@@ -1,7 +1,8 @@
 const express = require('express')
 const { MongoClient, ObjectId } = require('mongodb')
+require('dotenv').config()
 
-const url = 'mongodb+srv://admin:L3e82M33940zifIx@backend-nodejsjavascrip.e2asrei.mongodb.net'
+const url = process.env.DATABASE_URL
 const client = new MongoClient(url)
 const dbName = 'db-backend-nodejs-express'
 
