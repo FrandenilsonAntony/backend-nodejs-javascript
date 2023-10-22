@@ -55,14 +55,19 @@ async function main () {
 
 
   // READ BY ID - [GET] /items/:id/
-  app.get("/items/:id", function (req, res) {
+  app.get("/items/:id", async function (req, res) {
     //Acessamos o parâmetro de rota ID
     //Subtraí 1 para corrigir a ordem de início da lista
-    const id = +req.params.id
+    const id = req.params.id
     
     //Acessmos o item da lista a partir do index.js
-    const item = items.find(function (elemento){
-      return elemento.id === id
+    //const item = items.find(function (elemento){
+    //  return elemento.id === id
+    //})
+    
+    //Buscamos o documento na Colletion
+    const item = await collection.findOne({
+      _id: new ObjectId(id)
     })
     
     //Exibe o item obtido
