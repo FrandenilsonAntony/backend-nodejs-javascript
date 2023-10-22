@@ -149,9 +149,10 @@ async function main () {
     res.send("Item Deleted by id with successfully.")
   })
 
+  const port = process.env.PORT || 3000
 
-  app.listen(process.env.PORT || 3000, () => {
-    console.log("App running on http://localhost:3000")
+  app.listen(port, function () {
+    console.log(`App running on http://localhost:${port}`)
   })
 }
 
