@@ -71,20 +71,23 @@ async function main () {
 
 
   // CREATE - [POST] /items
-  app.post("/items", function (req, res){
+  app.post("/items", async function (req, res){
     //Extrair informação do requerie of body
     const item = req.body
 
-    if (!item || !item.name || !item.imageUrl) {
+    if (!item || !item.empresa || !item.cargo) {
       return res.status(400).send({
-        message: "name & imageUrl are required"
+        message: "Empresa & Cargo are required"
       })
     }
 
-    item.id = items.length + 1
+    //item.id = items.length + 1
 
     //Insero ela na lista
-    items.push(item)
+    //items.push(item)
+
+    // Inserir o item na Colletion
+    await collection.insertOne(item)
 
     //Sended message of successfully
     res.status(201).send(item)
