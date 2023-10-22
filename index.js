@@ -1,5 +1,5 @@
 const express = require('express')
-const { MongoClient } = require('mongodb')
+const { MongoClient, ObjectId } = require('mongodb')
 
 const url = 'mongodb+srv://admin:L3e82M33940zifIx@backend-nodejsjavascrip.e2asrei.mongodb.net'
 const client = new MongoClient(url)
@@ -95,27 +95,33 @@ async function main () {
 
 
   // UPDATE - [PUT] /items/:id
-  app.put("/items/:id", function (req, res){
+  app.put("/items/:id", async function (req, res){
     //Acessamos o parâmetro de rota ID
     //Subtraí 1 para corrigir a ordem de início da lista
-    const id = +req.params.id
+    const id = req.params.id
     
     //obrtemos o novo item a partir of body of required 
     const newItem = req.body
     
     //Colocamos o novo item na mesma posição do item anterior.
-    const index = items.findIndex(function (elemento){
-      return elemento.id === id 
-    })
+    //const index = items.findIndex(function (elemento){
+    //return elemento.id === id 
+    // })
 
-    items[index] = {
-      ...newItem,
-      id,
-
-    }
+    //items[index] = {
+    //  ...newItem,
+    //  id,
+    //}
     
+    //Atualizar o documento na Collection
+    await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: newItem }
+    )
+
+
     //Envia mensagem de sucesso!
-    res.send(items[index])
+    res.send(newItem)
   })
 
 
