@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb')
 
 const url = 'mongodb+srv://admin:L3e82M33940zifIx@backend-nodejsjavascrip.e2asrei.mongodb.net'
 const client = new MongoClient(url)
-const dbName = 'Api_BackendNodejsExpress'
+const dbName = 'db-backend-nodejs-express'
 
 async function main () {
   //Conexão com Banco de Dados
@@ -12,7 +12,7 @@ async function main () {
   console.info("Database connected successfully!") 
 
   const db = client.db(dbName)
-  const collection = db.collection('empresas')
+  const collection = db.collection('items')
   
   
     
@@ -37,8 +37,7 @@ async function main () {
 
   const items = [
     {
-      "id": 1,
-      "name": "Java"
+     
     },
     {
       "id": 2,
@@ -48,8 +47,10 @@ async function main () {
 
 
   // READ ALL - [GET] /items
-  app.get("/items", function (req, res){
-    res.send(items.filter(Boolean))
+  app.get("/items", async function (req, res){
+    const documents = await collection.find().toArray()
+
+    res.send(documents)
   })
 
 
